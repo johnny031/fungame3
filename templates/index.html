@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
+<input type="number" id="number">
+
+
+<button onclick="myFunction()">確認</button>
+
+
+<script>
+function myFunction() {
+
+    var h3 = document.createElement("h3");
+    h3.innerHTML = "玩家名稱：<br>";
+    h3.style.fontFamily = "Microsoft JhengHei";
+    document.body.appendChild(h3);
+
+    var f = document.createElement("form");
+    f.setAttribute('method',"post");
+    f.setAttribute('action',"{{ url_for('hello') }}");
+
+    var x = document.getElementById("number").value;
+
+   
+
+    for (i = 0; i < x; i++) {
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "n";
+        input.className = i;
+        input.style.display = "block";
+        input.style.margin = "10px";
+        input.style.padding = "5px";
+        f.appendChild(input); 
+    }
+
+    
+
+    var s = document.createElement("input"); //input element, Submit button
+
+    s.setAttribute('type',"submit");
+    s.setAttribute('value',"Start!");
+    f.appendChild(s);
+    
+
+    document.getElementsByTagName('body')[0].appendChild(f);
+
+}
+</script>
+
+</body>
+</html>
