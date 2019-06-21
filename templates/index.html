@@ -1,55 +1,82 @@
 <!DOCTYPE html>
 <html>
+  <body>
+    <h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
+    <input type="number" id="number" />
 
-<body>
+    <button onclick="myFunction()">確認</button>
 
-<h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
-<input type="number" id="number">
+    <script>
+      var ran = {{ran | tojson}};
+      var ran2 = {{ran2 | tojson}};
+      var ran3 = {{ran3 | tojson}};
 
+      console.log(ran);
+      console.log(ran2);
+      console.log(ran3);
 
-<button onclick="myFunction()">確認</button>
+      function myFunction() {
+        var h3 = document.createElement("h3");
+        h3.innerHTML = "玩家名稱：<br>";
+        h3.style.fontFamily = "Microsoft JhengHei";
+        document.body.appendChild(h3);
 
+        var f = document.createElement("form");
+        f.setAttribute("method", "get");
+        f.setAttribute("action", "{{ url_for('hello') }}");
 
-<script>
-function myFunction() {
+        var x = document.getElementById("number").value;
 
-    var h3 = document.createElement("h3");
-    h3.innerHTML = "玩家名稱：<br>";
-    h3.style.fontFamily = "Microsoft JhengHei";
-    document.body.appendChild(h3);
+        for (i = 0; i < x; i++) {
+          var input = document.createElement("input");
+          input.type = "text";
+          input.name = "n";
+          input.className = i;
+          input.style.display = "block";
+          input.style.margin = "10px";
+          input.style.padding = "5px";
+          f.appendChild(input);
+        }
 
-    var f = document.createElement("form");
-    f.setAttribute('method',"post");
-    f.setAttribute('action',"{{ url_for('hello') }}");
+        for (i=0; i<100; i++) {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = ran[i];
+            input.name = "ran";
+            input.style.display = "none";
+            input.style.margin = "10px";
+            input.style.padding = "5px";
+            f.appendChild(input);
+        }
+        for (i=0; i<202; i++) {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = ran2[i];
+            input.name = "ran2";
+            input.style.display = "none";
+            input.style.margin = "10px";
+            input.style.padding = "5px";
+            f.appendChild(input);
+        }
+        for (i=0; i<21; i++) {
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = ran3[i];
+            input.name = "ran3";
+            input.style.display = "none";
+            input.style.margin = "10px";
+            input.style.padding = "5px";
+            f.appendChild(input);
+        }
 
-    var x = document.getElementById("number").value;
+        var s = document.createElement("input"); //input element, Submit button
 
-   
+        s.setAttribute("type", "submit");
+        s.setAttribute("value", "Start!");
+        f.appendChild(s);
 
-    for (i = 0; i < x; i++) {
-        var input = document.createElement("input");
-        input.type = "text";
-        input.name = "n";
-        input.className = i;
-        input.style.display = "block";
-        input.style.margin = "10px";
-        input.style.padding = "5px";
-        f.appendChild(input); 
-    }
-
-    
-
-    var s = document.createElement("input"); //input element, Submit button
-
-    s.setAttribute('type',"submit");
-    s.setAttribute('value',"Start!");
-    f.appendChild(s);
-    
-
-    document.getElementsByTagName('body')[0].appendChild(f);
-
-}
-</script>
-
-</body>
+        document.getElementsByTagName("body")[0].appendChild(f);
+      }
+    </script>
+  </body>
 </html>

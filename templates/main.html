@@ -478,12 +478,19 @@
     <script>
 
 
-      var test = {{name | tojson}};
+      var test = {{name | tojson}}
+      var rand = {{rand | tojson}}
+      var rand2 = {{rand2 | tojson}}
+      var rand3 = {{rand3 | tojson}}
 
+      console.log(rand)
+      console.log(rand2)
+      console.log(rand3)
 
           document.addEventListener('DOMContentLoaded', function() {
 
               var pictures = [];
+
 
               for(var i=1; i<101; i++){
 
@@ -499,9 +506,6 @@
                   pictures2.push(object);
               }
 
-
-                  var array=[];
-                  var array2=[];
 
                   for (j=0; j<test.length; j++){
 
@@ -520,29 +524,15 @@
 
 
                       for (i = 0; i < 4; i++) {
-                          var number = Math.floor(Math.random() * pictures.length);
+                        var td = document.createElement("td");
+                        td.className = "column";
 
+                        var img = document.createElement("img");
+                        img.className = i;
+                        img.src = pictures[rand[i+j*4]];
 
-
-                              if (array.includes(number) === true){
-                                  i--;
-                              }
-
-                              else{
-                                  array.push(number);
-
-                                  var td = document.createElement("td");
-                                  td.className = "column";
-
-
-                                  var img = document.createElement("img");
-                                  img.className = i;
-                                  img.src = pictures[number];
-
-                                  td.appendChild(img);
-                                  tr.appendChild(td);
-                          }
-
+                        td.appendChild(img);
+                        tr.appendChild(td);
                       }
 
 
@@ -566,27 +556,16 @@
                       tr2.appendChild(td);
 
                       for (i = 0; i < 4; i++) {
-                          var number = Math.floor(Math.random() * pictures2.length);
 
-                          if (array2.includes(number) === true){
-                                  i--;
-                          }
-
-                          else{
-
-                              array2.push(number);
-
-                              var td = document.createElement("td");
-                              td.className = "column";
+                        var td = document.createElement("td");
+                        td.className = "column";
 
 
-                              var img = document.createElement("img");
-                              img.className = i;
-                              img.src = pictures2[number];
-                              td.appendChild(img);
-                              tr2.appendChild(td);
-
-                          }
+                        var img = document.createElement("img");
+                        img.className = i;
+                        img.src = pictures2[rand2[i+j*4]];
+                        td.appendChild(img);
+                        tr2.appendChild(td);
 
                       }
 
@@ -1428,7 +1407,6 @@
               }
 
 
-              var array3=[];
 
               document.querySelector("#other_clues").onclick = function() {
 
@@ -1439,40 +1417,33 @@
                   tr.className = "clues_row";
 
                   for (i=0; i<4; i++) {
-                          var random = Math.floor(Math.random() * clues.length);
-
-                          if (array3.includes(random) === true){
-                              i--;
-                          }
-
-                          else{
-                              array3.push(random);
-                              var img = document.createElement("img");
-                              img.src = clues[random];
-                              img.setAttribute('id', 'clues'+i);
-                              img.setAttribute('usemap', "#choose_other_clues"+i);
-                              img.style.display = "none";
-
-                              document.body.appendChild(img);
-                              if(i === 0){
-                                  document.querySelector('#a5').appendChild(img);
-                                  $("#clues0").fadeIn();
-                              }
-                              else if(i ===1){
-                                  document.querySelector('#a6').appendChild(img);
-                                  $("#clues1").fadeIn(500);
-                              }
-                              else if(i ===2){
-                                  document.querySelector('#a7').appendChild(img);
-                                  $("#clues2").fadeIn(1150);
-                              }
-                              else{
-                                  document.querySelector('#a8').appendChild(img);
-                                  $("#clues3").fadeIn(2000);
-                              }
 
 
-                          }
+                        var img = document.createElement("img");
+                        img.src = clues[rand3[i]];
+                        img.setAttribute('id', 'clues'+i);
+                        img.setAttribute('usemap', "#choose_other_clues"+i);
+                        img.style.display = "none";
+
+                        document.body.appendChild(img);
+                        if(i === 0){
+                            document.querySelector('#a5').appendChild(img);
+                            $("#clues0").fadeIn();
+                        }
+                        else if(i ===1){
+                            document.querySelector('#a6').appendChild(img);
+                            $("#clues1").fadeIn(500);
+                        }
+                        else if(i ===2){
+                            document.querySelector('#a7').appendChild(img);
+                            $("#clues2").fadeIn(1150);
+                        }
+                        else{
+                            document.querySelector('#a8').appendChild(img);
+                            $("#clues3").fadeIn(2000);
+                        }
+
+
                       }
 
 
@@ -1492,24 +1463,15 @@
                   document.getElementById("another_clue1").disabled = true;
                   document.getElementById("another_clue2").disabled = false;
 
-                  for (i=0; i<1; i++) {
 
-                      var random1 = Math.floor(Math.random() * clues.length);
+                    var img = document.createElement("img");
+                    img.setAttribute('id', 'clues4');
+                    img.src = clues[rand3[4]];
+                    img.style = "position:absolute; left:530px; top:80px; display: none;"
+                    document.body.appendChild(img);
+                    $(img).fadeIn();
 
-                      if (array3.includes(random1) === true){
-                          i--;
-                      }
 
-                      else{
-                          array3.push(random1);
-                          var img = document.createElement("img");
-                          img.setAttribute('id', 'clues4');
-                          img.src = clues[random1];
-                          img.style = "position:absolute; left:530px; top:80px; display: none;"
-                          document.body.appendChild(img);
-                          $(img).fadeIn();
-                      }
-                  }
 
               }
 
@@ -1529,24 +1491,12 @@
 
                       }
 
-                  for (i=0; i<1; i++) {
-
-                      var random2 = Math.floor(Math.random() * clues.length);
-
-                      if (array3.includes(random2) === true){
-                          i--;
-                      }
-
-                      else{
-                          array3.push(random2);
-                          var img = document.createElement("img");
-                          img.setAttribute('id', 'clues5');
-                          img.src = clues[random2];
-                          img.style = "position:absolute; left:530px; top:80px; display: none;"
-                          document.body.appendChild(img);
-                          $(img).fadeIn();
-                      }
-                  }
+                    var img = document.createElement("img");
+                    img.setAttribute('id', 'clues5');
+                    img.src = clues[rand3[5]];
+                    img.style = "position:absolute; left:530px; top:80px; display: none;"
+                    document.body.appendChild(img);
+                    $(img).fadeIn();
 
               }
 
