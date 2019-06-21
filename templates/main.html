@@ -15,6 +15,10 @@
       width: 100px;
     }
 
+    #qrcode {
+      top: 500px !important;
+    }
+
     #clues0 {
       /*clues0~3：four random clue cards image*/
       position: absolute;
@@ -475,1256 +479,1269 @@
 
   <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.qrcode.js"></script>
+    <script type="text/javascript" src="/static/qrcode.js"></script>
     <script>
 
-
-      var test = {{name | tojson}}
-      var rand = {{rand | tojson}}
-      var rand2 = {{rand2 | tojson}}
-      var rand3 = {{rand3 | tojson}}
-
-      console.log(rand)
-      console.log(rand2)
-      console.log(rand3)
-
-          document.addEventListener('DOMContentLoaded', function() {
-
-              var pictures = [];
+      $(function(){
+          $('#qrcode').qrcode({
+              text: window.location.href,
+              render: 'canvas',
+              width: 150,
+              height: 150
+        });
+      })
 
 
-              for(var i=1; i<101; i++){
 
-                  var method = "/static/method" + i + ".png";
-                  pictures.push(method);
-              }
+          var test = {{name | tojson}}
+          var rand = {{rand | tojson}}
+          var rand2 = {{rand2 | tojson}}
+          var rand3 = {{rand3 | tojson}}
 
-              var pictures2 = [];
+          console.log(rand)
+          console.log(rand2)
+          console.log(rand3)
+          console.log(window.location.href)
 
-              for (var i=1; i<203; i++){
+              document.addEventListener('DOMContentLoaded', function() {
 
-                  var object = "/static/object" + i + ".png";
-                  pictures2.push(object);
-              }
+                  var pictures = [];
 
 
-                  for (j=0; j<test.length; j++){
+                  for(var i=1; i<101; i++){
+
+                      var method = "/static/method" + i + ".png";
+                      pictures.push(method);
+                  }
+
+                  var pictures2 = [];
+
+                  for (var i=1; i<203; i++){
+
+                      var object = "/static/object" + i + ".png";
+                      pictures2.push(object);
+                  }
+
+
+                      for (j=0; j<test.length; j++){
+
+                          var tr = document.createElement("tr");
+                          tr.className = "row";
+
+                          var name = document.createElement("h3");
+                          name.className = j;
+                          name.innerHTML = test[j] + "：";
+                          name.style.fontFamily = "Microsoft JhengHei";
+
+                          var td = document.createElement("td");
+                          td.className = "column";
+                          td.appendChild(name);
+                          tr.appendChild(td);
+
+
+                          for (i = 0; i < 4; i++) {
+                            var td = document.createElement("td");
+                            td.className = "column";
+
+                            var img = document.createElement("img");
+                            img.className = i;
+                            img.src = pictures[rand[i+j*4]];
+
+                            td.appendChild(img);
+                            tr.appendChild(td);
+                          }
+
+
+
+                          document.body.appendChild(tr);
+                          document.querySelector("#images").appendChild(tr);
+
+
+
+                          var tr2 = document.createElement("tr");
+                          tr2.className = "row";
+
+                          var name = document.createElement("h3");
+                          name.className = j;
+                          name.innerHTML = test[j] + "：";
+
+                          var td = document.createElement("td");
+                          td.className = "column";
+                          td.style.visibility = "hidden";
+                          td.appendChild(name);
+                          tr2.appendChild(td);
+
+                          for (i = 0; i < 4; i++) {
+
+                            var td = document.createElement("td");
+                            td.className = "column";
+
+
+                            var img = document.createElement("img");
+                            img.className = i;
+                            img.src = pictures2[rand2[i+j*4]];
+                            td.appendChild(img);
+                            tr2.appendChild(td);
+
+                          }
+
+
+
+                          document.body.appendChild(tr2);
+                          document.querySelector("#images").appendChild(tr2);
+
+                          var space = document.createElement("div");
+                          space.innerHTML = "<br>";
+                          document.body.appendChild(space);
+                          document.querySelector("#images").appendChild(space);
+
+
+
+
+                      }
+
+                  document.querySelector("#cause_of_death").onclick = function() {
+                      document.getElementById("cause_of_death").disabled = true;
+                      var cause_of_death = document.createElement("img");
+                      cause_of_death.className = "cause_of_death";
+                      cause_of_death.src = "{{url_for('static', filename='cause_of_death.png')}}";
+                      cause_of_death.setAttribute('usemap', "#choose_cause_of_death");
+                      cause_of_death.style.display = "none";
+                      document.body.appendChild(cause_of_death);
+                      $(cause_of_death).fadeIn();
+                  }
+
+                  document.querySelector("#location").onclick = function() {
+
+                      document.getElementById("location").disabled = true;
+                      var location1 = document.createElement("img");
+                      location1.setAttribute('id', "location1");
+                      location1.src = "{{url_for('static', filename='location1.png')}}";
+                      location1.style.display = "none";
+                      document.body.appendChild(location1);
+                      document.querySelector("#a1").appendChild(location1);
+                      $(location1).fadeIn();
+
+
+                      var location2 = document.createElement("img");
+                      location2.setAttribute('id', "location2");
+                      location2.src = "{{url_for('static', filename='location2.png')}}";
+                      location2.style.display = "none";
+                      document.body.appendChild(location2);
+                      document.querySelector("#a2").appendChild(location2);
+                      $(location2).fadeIn(500);
+
+                      var location3 = document.createElement("img");
+                      location3.setAttribute('id', "location3");
+                      location3.src = "{{url_for('static', filename='location3.png')}}";
+                      location3.style.display = "none";
+                      document.body.appendChild(location3);
+                      document.querySelector("#a3").appendChild(location3);
+                      $(location3).fadeIn(1150);
+
+                      var location4 = document.createElement("img");
+                      location4.setAttribute('id', "location4");
+                      location4.src = "{{url_for('static', filename='location4.png')}}";
+                      location4.style.display = "none";
+                      document.body.appendChild(location4);
+                      document.querySelector("#a4").appendChild(location4);
+                      $(location4).fadeIn(2000);
+                  }
+
+
+
+
+
+
+                  document.querySelector("#area1_1").onclick = function() {
+                      var index = document.getElementById("index1_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area1_2").onclick = function() {
+                      var index = document.getElementById("index1_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area1_3").onclick = function() {
+                      var index = document.getElementById("index1_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area1_4").onclick = function() {
+                      var index = document.getElementById("index1_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area1_5").onclick = function() {
+                      var index = document.getElementById("index1_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area1_6").onclick = function() {
+                      var index = document.getElementById("index1_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index1_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_1").onclick = function() {
+                      var index = document.getElementById("index2_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_2").onclick = function() {
+                      var index = document.getElementById("index2_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_3").onclick = function() {
+                      var index = document.getElementById("index2_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_4").onclick = function() {
+                      var index = document.getElementById("index2_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_5").onclick = function() {
+                      var index = document.getElementById("index2_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area2_6").onclick = function() {
+                      var index = document.getElementById("index2_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index2_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+
+
+                  document.querySelector("#area3_1_1").onclick = function() {
+                      var index = document.getElementById("index3_1_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_1_2").onclick = function() {
+                      var index = document.getElementById("index3_1_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_1_3").onclick = function() {
+                      var index = document.getElementById("index3_1_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_1_4").onclick = function() {
+                      var index = document.getElementById("index3_1_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_1_5").onclick = function() {
+                      var index = document.getElementById("index3_1_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_1_6").onclick = function() {
+                      var index = document.getElementById("index3_1_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_1_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_1").onclick = function() {
+                      var index = document.getElementById("index3_2_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_2").onclick = function() {
+                      var index = document.getElementById("index3_2_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_3").onclick = function() {
+                      var index = document.getElementById("index3_2_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_4").onclick = function() {
+                      var index = document.getElementById("index3_2_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_5").onclick = function() {
+                      var index = document.getElementById("index3_2_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_2_6").onclick = function() {
+                      var index = document.getElementById("index3_2_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_2_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_1").onclick = function() {
+                      var index = document.getElementById("index3_3_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_2").onclick = function() {
+                      var index = document.getElementById("index3_3_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_3").onclick = function() {
+                      var index = document.getElementById("index3_3_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_4").onclick = function() {
+                      var index = document.getElementById("index3_3_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_5").onclick = function() {
+                      var index = document.getElementById("index3_3_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_3_6").onclick = function() {
+                      var index = document.getElementById("index3_3_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_3_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_1").onclick = function() {
+                      var index = document.getElementById("index3_4_1");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_1');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_2").onclick = function() {
+                      var index = document.getElementById("index3_4_2");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_2');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_3").onclick = function() {
+                      var index = document.getElementById("index3_4_3");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_3');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_4").onclick = function() {
+                      var index = document.getElementById("index3_4_4");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_4');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_5").onclick = function() {
+                      var index = document.getElementById("index3_4_5");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_5');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+                  document.querySelector("#area3_4_6").onclick = function() {
+                      var index = document.getElementById("index3_4_6");
+
+                      if(index === null){
+                          var index = document.createElement("img");
+                          index.setAttribute('id', 'index3_4_6');
+                          index.src = "{{url_for('static', filename='index.png')}}";
+                          index.style.display = "inline";
+                          document.body.appendChild(index);
+                      }
+
+                      else if(index.style.display === "none"){
+                          index.style.display = "inline";
+                      }
+
+                      else{
+                          index.style.display = "none";
+                      }
+                  }
+
+
+                  document.querySelector("#a1").onclick = function() {
+                      $("#location2").fadeOut();
+                      $("#location3").fadeOut();
+                      $("#location4").fadeOut();
+                      var location1 = document.getElementById("location1");
+                      $(location1).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
+                      location1.setAttribute("usemap", "#choose_location");
+
+                  }
+
+                  document.querySelector("#a2").onclick = function() {
+                      $("#location1").fadeOut();
+                      $("#location3").fadeOut();
+                      $("#location4").fadeOut();
+                      var location2 = document.getElementById("location2");
+                      $(location2).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
+                      location2.setAttribute("usemap", "#choose_location");
+                  }
+
+                  document.querySelector("#a3").onclick = function() {
+                      $("#location1").fadeOut();
+                      $("#location2").fadeOut();
+                      $("#location4").fadeOut();
+                      var location3 = document.getElementById("location3");
+                      $(location3).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
+                      location3.setAttribute("usemap", "#choose_location");
+                  }
+
+                  document.querySelector("#a4").onclick = function() {
+                      $("#location1").fadeOut();
+                      $("#location2").fadeOut();
+                      $("#location3").fadeOut();
+                      var location4 = document.getElementById("location4");
+                      $(location4).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
+                      location4.setAttribute("usemap", "#choose_location");
+                  }
+
+
+                  var clues = [];
+
+                  for(var i=1; i<22; i++){
+
+                      var clue = "/static/other_clues" + i + ".png";
+                      clues.push(clue);
+                  }
+
+
+
+                  document.querySelector("#other_clues").onclick = function() {
+
+                      document.getElementById("other_clues").disabled = true;
+                      document.getElementById("another_clue1").disabled = false;
 
                       var tr = document.createElement("tr");
-                      tr.className = "row";
+                      tr.className = "clues_row";
 
-                      var name = document.createElement("h3");
-                      name.className = j;
-                      name.innerHTML = test[j] + "：";
-                      name.style.fontFamily = "Microsoft JhengHei";
-
-                      var td = document.createElement("td");
-                      td.className = "column";
-                      td.appendChild(name);
-                      tr.appendChild(td);
+                      for (i=0; i<4; i++) {
 
 
-                      for (i = 0; i < 4; i++) {
-                        var td = document.createElement("td");
-                        td.className = "column";
+                            var img = document.createElement("img");
+                            img.src = clues[rand3[i]];
+                            img.setAttribute('id', 'clues'+i);
+                            img.setAttribute('usemap', "#choose_other_clues"+i);
+                            img.style.display = "none";
 
-                        var img = document.createElement("img");
-                        img.className = i;
-                        img.src = pictures[rand[i+j*4]];
+                            document.body.appendChild(img);
+                            if(i === 0){
+                                document.querySelector('#a5').appendChild(img);
+                                $("#clues0").fadeIn();
+                            }
+                            else if(i ===1){
+                                document.querySelector('#a6').appendChild(img);
+                                $("#clues1").fadeIn(500);
+                            }
+                            else if(i ===2){
+                                document.querySelector('#a7').appendChild(img);
+                                $("#clues2").fadeIn(1150);
+                            }
+                            else{
+                                document.querySelector('#a8').appendChild(img);
+                                $("#clues3").fadeIn(2000);
+                            }
 
-                        td.appendChild(img);
-                        tr.appendChild(td);
+
+                          }
+
+
+
+
+                  }
+
+
+                  var map3_array = ['map0','map1','map2','map3']
+
+                  document.querySelector("#another_clue1").onclick = function() {
+                      for(var i=0; i < map3_array.length; i++){
+                          var map3 = document.getElementById(map3_array[i]);
+
+                          map3.setAttribute('name','none');
                       }
-
-
-
-                      document.body.appendChild(tr);
-                      document.querySelector("#images").appendChild(tr);
-
-
-
-                      var tr2 = document.createElement("tr");
-                      tr2.className = "row";
-
-                      var name = document.createElement("h3");
-                      name.className = j;
-                      name.innerHTML = test[j] + "：";
-
-                      var td = document.createElement("td");
-                      td.className = "column";
-                      td.style.visibility = "hidden";
-                      td.appendChild(name);
-                      tr2.appendChild(td);
-
-                      for (i = 0; i < 4; i++) {
-
-                        var td = document.createElement("td");
-                        td.className = "column";
+                      document.getElementById("another_clue1").disabled = true;
+                      document.getElementById("another_clue2").disabled = false;
 
 
                         var img = document.createElement("img");
-                        img.className = i;
-                        img.src = pictures2[rand2[i+j*4]];
-                        td.appendChild(img);
-                        tr2.appendChild(td);
-
-                      }
-
-
-
-                      document.body.appendChild(tr2);
-                      document.querySelector("#images").appendChild(tr2);
-
-                      var space = document.createElement("div");
-                      space.innerHTML = "<br>";
-                      document.body.appendChild(space);
-                      document.querySelector("#images").appendChild(space);
-
-
-
-
-                  }
-
-              document.querySelector("#cause_of_death").onclick = function() {
-                  document.getElementById("cause_of_death").disabled = true;
-                  var cause_of_death = document.createElement("img");
-                  cause_of_death.className = "cause_of_death";
-                  cause_of_death.src = "{{url_for('static', filename='cause_of_death.png')}}";
-                  cause_of_death.setAttribute('usemap', "#choose_cause_of_death");
-                  cause_of_death.style.display = "none";
-                  document.body.appendChild(cause_of_death);
-                  $(cause_of_death).fadeIn();
-              }
-
-              document.querySelector("#location").onclick = function() {
-
-                  document.getElementById("location").disabled = true;
-                  var location1 = document.createElement("img");
-                  location1.setAttribute('id', "location1");
-                  location1.src = "{{url_for('static', filename='location1.png')}}";
-                  location1.style.display = "none";
-                  document.body.appendChild(location1);
-                  document.querySelector("#a1").appendChild(location1);
-                  $(location1).fadeIn();
-
-
-                  var location2 = document.createElement("img");
-                  location2.setAttribute('id', "location2");
-                  location2.src = "{{url_for('static', filename='location2.png')}}";
-                  location2.style.display = "none";
-                  document.body.appendChild(location2);
-                  document.querySelector("#a2").appendChild(location2);
-                  $(location2).fadeIn(500);
-
-                  var location3 = document.createElement("img");
-                  location3.setAttribute('id', "location3");
-                  location3.src = "{{url_for('static', filename='location3.png')}}";
-                  location3.style.display = "none";
-                  document.body.appendChild(location3);
-                  document.querySelector("#a3").appendChild(location3);
-                  $(location3).fadeIn(1150);
-
-                  var location4 = document.createElement("img");
-                  location4.setAttribute('id', "location4");
-                  location4.src = "{{url_for('static', filename='location4.png')}}";
-                  location4.style.display = "none";
-                  document.body.appendChild(location4);
-                  document.querySelector("#a4").appendChild(location4);
-                  $(location4).fadeIn(2000);
-              }
-
-
-
-
-
-
-              document.querySelector("#area1_1").onclick = function() {
-                  var index = document.getElementById("index1_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area1_2").onclick = function() {
-                  var index = document.getElementById("index1_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area1_3").onclick = function() {
-                  var index = document.getElementById("index1_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area1_4").onclick = function() {
-                  var index = document.getElementById("index1_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area1_5").onclick = function() {
-                  var index = document.getElementById("index1_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area1_6").onclick = function() {
-                  var index = document.getElementById("index1_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index1_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_1").onclick = function() {
-                  var index = document.getElementById("index2_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_2").onclick = function() {
-                  var index = document.getElementById("index2_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_3").onclick = function() {
-                  var index = document.getElementById("index2_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_4").onclick = function() {
-                  var index = document.getElementById("index2_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_5").onclick = function() {
-                  var index = document.getElementById("index2_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area2_6").onclick = function() {
-                  var index = document.getElementById("index2_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index2_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-
-
-              document.querySelector("#area3_1_1").onclick = function() {
-                  var index = document.getElementById("index3_1_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_1_2").onclick = function() {
-                  var index = document.getElementById("index3_1_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_1_3").onclick = function() {
-                  var index = document.getElementById("index3_1_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_1_4").onclick = function() {
-                  var index = document.getElementById("index3_1_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_1_5").onclick = function() {
-                  var index = document.getElementById("index3_1_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_1_6").onclick = function() {
-                  var index = document.getElementById("index3_1_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_1_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_1").onclick = function() {
-                  var index = document.getElementById("index3_2_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_2").onclick = function() {
-                  var index = document.getElementById("index3_2_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_3").onclick = function() {
-                  var index = document.getElementById("index3_2_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_4").onclick = function() {
-                  var index = document.getElementById("index3_2_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_5").onclick = function() {
-                  var index = document.getElementById("index3_2_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_2_6").onclick = function() {
-                  var index = document.getElementById("index3_2_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_2_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_1").onclick = function() {
-                  var index = document.getElementById("index3_3_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_2").onclick = function() {
-                  var index = document.getElementById("index3_3_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_3").onclick = function() {
-                  var index = document.getElementById("index3_3_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_4").onclick = function() {
-                  var index = document.getElementById("index3_3_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_5").onclick = function() {
-                  var index = document.getElementById("index3_3_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_3_6").onclick = function() {
-                  var index = document.getElementById("index3_3_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_3_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_1").onclick = function() {
-                  var index = document.getElementById("index3_4_1");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_1');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_2").onclick = function() {
-                  var index = document.getElementById("index3_4_2");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_2');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_3").onclick = function() {
-                  var index = document.getElementById("index3_4_3");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_3');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_4").onclick = function() {
-                  var index = document.getElementById("index3_4_4");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_4');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_5").onclick = function() {
-                  var index = document.getElementById("index3_4_5");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_5');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-              document.querySelector("#area3_4_6").onclick = function() {
-                  var index = document.getElementById("index3_4_6");
-
-                  if(index === null){
-                      var index = document.createElement("img");
-                      index.setAttribute('id', 'index3_4_6');
-                      index.src = "{{url_for('static', filename='index.png')}}";
-                      index.style.display = "inline";
-                      document.body.appendChild(index);
-                  }
-
-                  else if(index.style.display === "none"){
-                      index.style.display = "inline";
-                  }
-
-                  else{
-                      index.style.display = "none";
-                  }
-              }
-
-
-              document.querySelector("#a1").onclick = function() {
-                  $("#location2").fadeOut();
-                  $("#location3").fadeOut();
-                  $("#location4").fadeOut();
-                  var location1 = document.getElementById("location1");
-                  $(location1).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
-                  location1.setAttribute("usemap", "#choose_location");
-
-              }
-
-              document.querySelector("#a2").onclick = function() {
-                  $("#location1").fadeOut();
-                  $("#location3").fadeOut();
-                  $("#location4").fadeOut();
-                  var location2 = document.getElementById("location2");
-                  $(location2).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
-                  location2.setAttribute("usemap", "#choose_location");
-              }
-
-              document.querySelector("#a3").onclick = function() {
-                  $("#location1").fadeOut();
-                  $("#location2").fadeOut();
-                  $("#location4").fadeOut();
-                  var location3 = document.getElementById("location3");
-                  $(location3).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
-                  location3.setAttribute("usemap", "#choose_location");
-              }
-
-              document.querySelector("#a4").onclick = function() {
-                  $("#location1").fadeOut();
-                  $("#location2").fadeOut();
-                  $("#location3").fadeOut();
-                  var location4 = document.getElementById("location4");
-                  $(location4).animate({position:'absolute', top:'55px', left:'1060px'}, 800);
-                  location4.setAttribute("usemap", "#choose_location");
-              }
-
-
-              var clues = [];
-
-              for(var i=1; i<22; i++){
-
-                  var clue = "/static/other_clues" + i + ".png";
-                  clues.push(clue);
-              }
-
-
-
-              document.querySelector("#other_clues").onclick = function() {
-
-                  document.getElementById("other_clues").disabled = true;
-                  document.getElementById("another_clue1").disabled = false;
-
-                  var tr = document.createElement("tr");
-                  tr.className = "clues_row";
-
-                  for (i=0; i<4; i++) {
-
-
-                        var img = document.createElement("img");
-                        img.src = clues[rand3[i]];
-                        img.setAttribute('id', 'clues'+i);
-                        img.setAttribute('usemap', "#choose_other_clues"+i);
-                        img.style.display = "none";
-
+                        img.setAttribute('id', 'clues4');
+                        img.src = clues[rand3[4]];
+                        img.style = "position:absolute; left:530px; top:80px; display: none;"
                         document.body.appendChild(img);
-                        if(i === 0){
-                            document.querySelector('#a5').appendChild(img);
-                            $("#clues0").fadeIn();
-                        }
-                        else if(i ===1){
-                            document.querySelector('#a6').appendChild(img);
-                            $("#clues1").fadeIn(500);
-                        }
-                        else if(i ===2){
-                            document.querySelector('#a7').appendChild(img);
-                            $("#clues2").fadeIn(1150);
-                        }
-                        else{
-                            document.querySelector('#a8').appendChild(img);
-                            $("#clues3").fadeIn(2000);
-                        }
-
-
-                      }
+                        $(img).fadeIn();
 
 
 
-
-              }
-
-
-              var map3_array = ['map0','map1','map2','map3']
-
-              document.querySelector("#another_clue1").onclick = function() {
-                  for(var i=0; i < map3_array.length; i++){
-                      var map3 = document.getElementById(map3_array[i]);
-
-                      map3.setAttribute('name','none');
-                  }
-                  document.getElementById("another_clue1").disabled = true;
-                  document.getElementById("another_clue2").disabled = false;
-
-
-                    var img = document.createElement("img");
-                    img.setAttribute('id', 'clues4');
-                    img.src = clues[rand3[4]];
-                    img.style = "position:absolute; left:530px; top:80px; display: none;"
-                    document.body.appendChild(img);
-                    $(img).fadeIn();
-
-
-
-              }
-
-              document.querySelector("#another_clue2").onclick = function() {
-                  for(var i=0; i < map3_array.length; i++){
-                      var map3 = document.getElementById(map3_array[i]);
-
-                      map3.setAttribute('name','none');
                   }
 
-                  document.getElementById("another_clue2").disabled = true;
+                  document.querySelector("#another_clue2").onclick = function() {
+                      for(var i=0; i < map3_array.length; i++){
+                          var map3 = document.getElementById(map3_array[i]);
 
-                  for(var i=0; i < a_array0.length; i++){
-                          var a = document.getElementById(a_array0[i]);
-
-                          a.setAttribute('style', 'pointer-events: auto;');
-
+                          map3.setAttribute('name','none');
                       }
 
-                    var img = document.createElement("img");
-                    img.setAttribute('id', 'clues5');
-                    img.src = clues[rand3[5]];
-                    img.style = "position:absolute; left:530px; top:80px; display: none;"
-                    document.body.appendChild(img);
-                    $(img).fadeIn();
+                      document.getElementById("another_clue2").disabled = true;
 
-              }
+                      for(var i=0; i < a_array0.length; i++){
+                              var a = document.getElementById(a_array0[i]);
 
-              var a_array0 = ['a5','a6','a7','a8']
-              var a_array1 = ['a6','a7','a8']
+                              a.setAttribute('style', 'pointer-events: auto;');
 
-              document.querySelector("#a5").onclick = function(){
-                  var clues5 = document.getElementById("clues5");
-                  var index3_1_array = ['index3_1_1', 'index3_1_2','index3_1_3','index3_1_4','index3_1_5','index3_1_6']
-                  var clues4 = document.getElementById("clues4");
+                          }
 
-                  if(clues4 !== null && clues5 === null){
-                      document.getElementById('map0').setAttribute('name','choose_other_clues0');
-                      for(var i=0; i < a_array1.length; i++){
-                          var a = document.getElementById(a_array1[i]);
+                        var img = document.createElement("img");
+                        img.setAttribute('id', 'clues5');
+                        img.src = clues[rand3[5]];
+                        img.style = "position:absolute; left:530px; top:80px; display: none;"
+                        document.body.appendChild(img);
+                        $(img).fadeIn();
 
-                          a.setAttribute('style', 'pointer-events: none;');
-
-                      }
-
-                      var clues0 = document.getElementById("clues0");
-                      clues4.setAttribute("usemap", "#choose_other_clues0");
-                      $(clues4).animate({position:'absolute', top:'365px', left:'700px'}, 800);
-                      setTimeout(sleep, 800);
-                      function sleep() {
-                          document.getElementById("a5").replaceChild(clues4,clues0);
-                      }
                   }
 
+                  var a_array0 = ['a5','a6','a7','a8']
+                  var a_array1 = ['a6','a7','a8']
 
-                  else if(clues5 !== null){
-                      document.getElementById('map0').setAttribute('name','choose_other_clues0');
-                      for(var i=0; i < a_array1.length; i++){
-                          var a = document.getElementById(a_array1[i]);
+                  document.querySelector("#a5").onclick = function(){
+                      var clues5 = document.getElementById("clues5");
+                      var index3_1_array = ['index3_1_1', 'index3_1_2','index3_1_3','index3_1_4','index3_1_5','index3_1_6']
+                      var clues4 = document.getElementById("clues4");
 
-                          a.setAttribute('style', 'pointer-events: none;');
+                      if(clues4 !== null && clues5 === null){
+                          document.getElementById('map0').setAttribute('name','choose_other_clues0');
+                          for(var i=0; i < a_array1.length; i++){
+                              var a = document.getElementById(a_array1[i]);
 
+                              a.setAttribute('style', 'pointer-events: none;');
+
+                          }
+
+                          var clues0 = document.getElementById("clues0");
+                          clues4.setAttribute("usemap", "#choose_other_clues0");
+                          $(clues4).animate({position:'absolute', top:'365px', left:'700px'}, 800);
+                          setTimeout(sleep, 800);
+                          function sleep() {
+                              document.getElementById("a5").replaceChild(clues4,clues0);
+                          }
                       }
-                      $(clues5).animate({position:'absolute', top:'365px', left:'700px'}, 800);
-                      clues5.setAttribute("usemap", "#choose_other_clues0");
+
+
+                      else if(clues5 !== null){
+                          document.getElementById('map0').setAttribute('name','choose_other_clues0');
+                          for(var i=0; i < a_array1.length; i++){
+                              var a = document.getElementById(a_array1[i]);
+
+                              a.setAttribute('style', 'pointer-events: none;');
+
+                          }
+                          $(clues5).animate({position:'absolute', top:'365px', left:'700px'}, 800);
+                          clues5.setAttribute("usemap", "#choose_other_clues0");
+
+                          for(var i=0; i < index3_1_array.length; i++){
+                              var index3_1 = document.getElementById(index3_1_array[i]);
+
+                              if(index3_1 !== null){
+                                  index3_1.style.zIndex = "2";
+                              }
+
+                          }
+                      }
 
                       for(var i=0; i < index3_1_array.length; i++){
                           var index3_1 = document.getElementById(index3_1_array[i]);
 
                           if(index3_1 !== null){
-                              index3_1.style.zIndex = "2";
+                              $(index3_1).fadeOut();
                           }
-
                       }
+
+
                   }
 
-                  for(var i=0; i < index3_1_array.length; i++){
-                      var index3_1 = document.getElementById(index3_1_array[i]);
+                  var a_array2 = ['a5','a7','a8']
 
-                      if(index3_1 !== null){
-                          $(index3_1).fadeOut();
+                  document.querySelector("#a6").onclick = function a6(){
+                      var clues5 = document.getElementById("clues5");
+                      var index3_2_array = ['index3_2_1', 'index3_2_2','index3_2_3','index3_2_4','index3_2_5','index3_2_6']
+                      var clues4 = document.getElementById("clues4");
+
+                      if(clues4 !== null && clues5 === null){
+                          document.getElementById('map1').setAttribute('name','choose_other_clues1');
+                          for(var i=0; i < a_array2.length; i++){
+                              var a = document.getElementById(a_array2[i]);
+
+                              a.setAttribute('style', 'pointer-events: none;');
+
+                          }
+                          var clues1 = document.getElementById("clues1");
+                          clues4.setAttribute("usemap", "#choose_other_clues1");
+                          $(clues4).animate({position:'absolute', top:'365px', left:'855px'}, 800);
+                          setTimeout(sleep, 800);
+                          function sleep() {
+                              document.getElementById("a6").replaceChild(clues4,clues1);
+                          }
                       }
-                  }
 
+                      else if(clues5 !== null){
+                          document.getElementById('map1').setAttribute('name','choose_other_clues1');
+                          for(var i=0; i < a_array2.length; i++){
+                              var a = document.getElementById(a_array2[i]);
 
-              }
+                              a.setAttribute('style', 'pointer-events: none;');
 
-              var a_array2 = ['a5','a7','a8']
+                          }
+                          $(clues5).animate({position:'absolute', top:'365px', left:'855px'}, 800);
+                          clues5.setAttribute("usemap", "#choose_other_clues1");
 
-              document.querySelector("#a6").onclick = function a6(){
-                  var clues5 = document.getElementById("clues5");
-                  var index3_2_array = ['index3_2_1', 'index3_2_2','index3_2_3','index3_2_4','index3_2_5','index3_2_6']
-                  var clues4 = document.getElementById("clues4");
+                          for(var i=0; i < index3_2_array.length; i++){
+                              var index3_2 = document.getElementById(index3_2_array[i]);
 
-                  if(clues4 !== null && clues5 === null){
-                      document.getElementById('map1').setAttribute('name','choose_other_clues1');
-                      for(var i=0; i < a_array2.length; i++){
-                          var a = document.getElementById(a_array2[i]);
-
-                          a.setAttribute('style', 'pointer-events: none;');
-
+                              if(index3_2 !== null){
+                                  index3_2.style.zIndex = "2";
+                              }
+                          }
                       }
-                      var clues1 = document.getElementById("clues1");
-                      clues4.setAttribute("usemap", "#choose_other_clues1");
-                      $(clues4).animate({position:'absolute', top:'365px', left:'855px'}, 800);
-                      setTimeout(sleep, 800);
-                      function sleep() {
-                          document.getElementById("a6").replaceChild(clues4,clues1);
-                      }
-                  }
-
-                  else if(clues5 !== null){
-                      document.getElementById('map1').setAttribute('name','choose_other_clues1');
-                      for(var i=0; i < a_array2.length; i++){
-                          var a = document.getElementById(a_array2[i]);
-
-                          a.setAttribute('style', 'pointer-events: none;');
-
-                      }
-                      $(clues5).animate({position:'absolute', top:'365px', left:'855px'}, 800);
-                      clues5.setAttribute("usemap", "#choose_other_clues1");
 
                       for(var i=0; i < index3_2_array.length; i++){
                           var index3_2 = document.getElementById(index3_2_array[i]);
 
                           if(index3_2 !== null){
-                              index3_2.style.zIndex = "2";
+                              $(index3_2).fadeOut();
                           }
                       }
                   }
 
-                  for(var i=0; i < index3_2_array.length; i++){
-                      var index3_2 = document.getElementById(index3_2_array[i]);
+                  var a_array3 = ['a5','a6','a8']
+                  document.querySelector("#a7").onclick = function(){
+                      var clues5 = document.getElementById("clues5");
+                      var index3_3_array = ['index3_3_1', 'index3_3_2','index3_3_3','index3_3_4','index3_3_5','index3_3_6']
+                      var clues4 = document.getElementById("clues4");
 
-                      if(index3_2 !== null){
-                          $(index3_2).fadeOut();
+                      if(clues4 !== null && clues5 === null){
+                          document.getElementById('map2').setAttribute('name','choose_other_clues2');
+                          for(var i=0; i < a_array3.length; i++){
+                              var a = document.getElementById(a_array3[i]);
+
+                              a.setAttribute('style', 'pointer-events: none;');
+
+                          }
+                          var clues2 = document.getElementById("clues2");
+                          clues4.setAttribute("usemap", "#choose_other_clues2");
+                          $(clues4).animate({position:'absolute', top:'365px', left:'1010px'}, 800);
+                          setTimeout(sleep, 800);
+                          function sleep() {
+                              document.getElementById("a7").replaceChild(clues4,clues2);
+                          }
                       }
-                  }
-              }
 
-              var a_array3 = ['a5','a6','a8']
-              document.querySelector("#a7").onclick = function(){
-                  var clues5 = document.getElementById("clues5");
-                  var index3_3_array = ['index3_3_1', 'index3_3_2','index3_3_3','index3_3_4','index3_3_5','index3_3_6']
-                  var clues4 = document.getElementById("clues4");
 
-                  if(clues4 !== null && clues5 === null){
-                      document.getElementById('map2').setAttribute('name','choose_other_clues2');
-                      for(var i=0; i < a_array3.length; i++){
-                          var a = document.getElementById(a_array3[i]);
+                      else if(clues5 !== null){
+                          document.getElementById('map2').setAttribute('name','choose_other_clues2');
+                          for(var i=0; i < a_array3.length; i++){
+                              var a = document.getElementById(a_array3[i]);
 
-                          a.setAttribute('style', 'pointer-events: none;');
+                              a.setAttribute('style', 'pointer-events: none;');
 
+                          }
+                          $(clues5).animate({position:'absolute', top:'365px', left:'1010px'}, 800);
+                          clues5.setAttribute("usemap", "#choose_other_clues2");
+
+                          for(var i=0; i < index3_3_array.length; i++){
+                              var index3_3 = document.getElementById(index3_3_array[i]);
+
+                              if(index3_3 !== null){
+                                  index3_3.style.zIndex = "2";
+                              }
+                          }
                       }
-                      var clues2 = document.getElementById("clues2");
-                      clues4.setAttribute("usemap", "#choose_other_clues2");
-                      $(clues4).animate({position:'absolute', top:'365px', left:'1010px'}, 800);
-                      setTimeout(sleep, 800);
-                      function sleep() {
-                          document.getElementById("a7").replaceChild(clues4,clues2);
-                      }
-                  }
-
-
-                  else if(clues5 !== null){
-                      document.getElementById('map2').setAttribute('name','choose_other_clues2');
-                      for(var i=0; i < a_array3.length; i++){
-                          var a = document.getElementById(a_array3[i]);
-
-                          a.setAttribute('style', 'pointer-events: none;');
-
-                      }
-                      $(clues5).animate({position:'absolute', top:'365px', left:'1010px'}, 800);
-                      clues5.setAttribute("usemap", "#choose_other_clues2");
 
                       for(var i=0; i < index3_3_array.length; i++){
                           var index3_3 = document.getElementById(index3_3_array[i]);
 
                           if(index3_3 !== null){
-                              index3_3.style.zIndex = "2";
+                              $(index3_3).fadeOut();
                           }
                       }
-                  }
 
-                  for(var i=0; i < index3_3_array.length; i++){
-                      var index3_3 = document.getElementById(index3_3_array[i]);
 
-                      if(index3_3 !== null){
-                          $(index3_3).fadeOut();
-                      }
                   }
 
 
-              }
 
+                  var a_array4 = ['a5','a6','a7']
+                  document.querySelector("#a8").onclick = function(){
+                      var clues5 = document.getElementById("clues5");
+                      var index3_4_array = ['index3_4_1', 'index3_4_2','index3_4_3','index3_4_4','index3_4_5','index3_4_6']
+                      var clues4 = document.getElementById("clues4");
 
+                      if(clues4 !== null && clues5 === null){
+                          document.getElementById('map3').setAttribute('name','choose_other_clues3');
+                          for(var i=0; i < a_array4.length; i++){
+                              var a = document.getElementById(a_array4[i]);
 
-              var a_array4 = ['a5','a6','a7']
-              document.querySelector("#a8").onclick = function(){
-                  var clues5 = document.getElementById("clues5");
-                  var index3_4_array = ['index3_4_1', 'index3_4_2','index3_4_3','index3_4_4','index3_4_5','index3_4_6']
-                  var clues4 = document.getElementById("clues4");
+                              a.setAttribute('style', 'pointer-events: none;');
 
-                  if(clues4 !== null && clues5 === null){
-                      document.getElementById('map3').setAttribute('name','choose_other_clues3');
-                      for(var i=0; i < a_array4.length; i++){
-                          var a = document.getElementById(a_array4[i]);
-
-                          a.setAttribute('style', 'pointer-events: none;');
-
+                          }
+                          var clues3 = document.getElementById("clues3");
+                          clues4.setAttribute("usemap", "#choose_other_clues3");
+                          $(clues4).animate({position:'absolute', top:'365px', left:'1165px'}, 800);
+                          setTimeout(sleep, 800);
+                          function sleep() {
+                              document.getElementById("a8").replaceChild(clues4,clues3);
+                          }
                       }
-                      var clues3 = document.getElementById("clues3");
-                      clues4.setAttribute("usemap", "#choose_other_clues3");
-                      $(clues4).animate({position:'absolute', top:'365px', left:'1165px'}, 800);
-                      setTimeout(sleep, 800);
-                      function sleep() {
-                          document.getElementById("a8").replaceChild(clues4,clues3);
+
+                      else if(clues5 !== null){
+                          document.getElementById('map3').setAttribute('name','choose_other_clues3');
+                          for(var i=0; i < a_array4.length; i++){
+                              var a = document.getElementById(a_array4[i]);
+
+                              a.setAttribute('style', 'pointer-events: none;');
+
+                          }
+                          $(clues5).animate({position:'absolute', top:'365px', left:'1165px'}, 800);
+                          clues5.setAttribute("usemap", "#choose_other_clues3");
+
+                          for(var i=0; i < index3_4_array.length; i++){
+                              var index3_4 = document.getElementById(index3_4_array[i]);
+
+                              if(index3_4 !== null){
+                                  index3_4.style.zIndex = "2";
+                              }
+                          }
                       }
-                  }
-
-                  else if(clues5 !== null){
-                      document.getElementById('map3').setAttribute('name','choose_other_clues3');
-                      for(var i=0; i < a_array4.length; i++){
-                          var a = document.getElementById(a_array4[i]);
-
-                          a.setAttribute('style', 'pointer-events: none;');
-
-                      }
-                      $(clues5).animate({position:'absolute', top:'365px', left:'1165px'}, 800);
-                      clues5.setAttribute("usemap", "#choose_other_clues3");
 
                       for(var i=0; i < index3_4_array.length; i++){
                           var index3_4 = document.getElementById(index3_4_array[i]);
 
                           if(index3_4 !== null){
-                              index3_4.style.zIndex = "2";
+                              $(index3_4).fadeOut();
                           }
                       }
                   }
 
-                  for(var i=0; i < index3_4_array.length; i++){
-                      var index3_4 = document.getElementById(index3_4_array[i]);
 
-                      if(index3_4 !== null){
-                          $(index3_4).fadeOut();
-                      }
-                  }
-              }
-
-
-      })
+          })
     </script>
-
     <button type="button" class="btn btn-danger" id="cause_of_death">
       Cause of death
     </button>
@@ -1809,7 +1826,9 @@
     <a id="a7"></a>
     <a id="a8"></a>
 
-    <div id="test1" style="position: absolute; left: 800px;"></div>
-    <div id="test2" style="position: absolute; left: 700px;"></div>
+    <div class="row">
+      <div class="col-sm-6" style="z-index: -5"></div>
+      <div id="qrcode"></div>
+    </div>
   </body>
 </html>

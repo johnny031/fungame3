@@ -7,13 +7,13 @@
     <button onclick="myFunction()">確認</button>
 
     <script>
-      var ran = {{ran | tojson}};
-      var ran2 = {{ran2 | tojson}};
-      var ran3 = {{ran3 | tojson}};
+      var m = {{m | tojson}};
+      var o = {{o | tojson}};
+      var c = {{c | tojson}};
 
-      console.log(ran);
-      console.log(ran2);
-      console.log(ran3);
+      console.log(m);
+      console.log(o);
+      console.log(c);
 
       function myFunction() {
         var h3 = document.createElement("h3");
@@ -38,31 +38,35 @@
           f.appendChild(input);
         }
 
-        for (i=0; i<100; i++) {
+        m.slice(0, 4*x)
+        o.slice(0, 4*x)
+        c.slice(0, 6)
+
+        for (i=0; i<4*x; i++) {
             var input = document.createElement("input");
             input.type = "text";
-            input.value = ran[i];
-            input.name = "ran";
+            input.value = m[i];
+            input.name = "m";
             input.style.display = "none";
             input.style.margin = "10px";
             input.style.padding = "5px";
             f.appendChild(input);
         }
-        for (i=0; i<202; i++) {
+        for (i=0; i<4*x; i++) {
             var input = document.createElement("input");
             input.type = "text";
-            input.value = ran2[i];
-            input.name = "ran2";
+            input.value = o[i];
+            input.name = "o";
             input.style.display = "none";
             input.style.margin = "10px";
             input.style.padding = "5px";
             f.appendChild(input);
         }
-        for (i=0; i<21; i++) {
+        for (i=0; i<6; i++) {
             var input = document.createElement("input");
             input.type = "text";
-            input.value = ran3[i];
-            input.name = "ran3";
+            input.value = c[i];
+            input.name = "c";
             input.style.display = "none";
             input.style.margin = "10px";
             input.style.padding = "5px";

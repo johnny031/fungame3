@@ -5,35 +5,32 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    ran = []
-    ran2 = []
-    ran3 = []
+    m = []
+    o = []
+    c = []
 
     for i in range(100):
-        ran.append(i)
+        m.append(i)
     for i in range(202):
-        ran2.append(i)
+        o.append(i)
     for i in range(21):
-        ran3.append(i)
+        c.append(i)
     
-    random.shuffle(ran)
-    random.shuffle(ran2)
-    random.shuffle(ran3)
+    random.shuffle(m)
+    random.shuffle(o)
+    random.shuffle(c)
 
-    return render_template("index.html",ran=ran,ran2=ran2,ran3=ran3)
+    return render_template("index.html",m=m,o=o,c=c)
 
 
 @app.route("/main")
 def hello():
     first = request.args.getlist("n")
     
-    ran = request.args.getlist("ran")
-    rand = ran[0:len(first)*4]
+    m = request.args.getlist("m")
 
-    ran2 = request.args.getlist("ran2")
-    rand2 = ran2[0:len(first)*4]
+    o = request.args.getlist("o")
 
-    ran3 = request.args.getlist("ran3")
-    rand3 = ran3[0:6]
+    c = request.args.getlist("c")
     
-    return render_template("main.html", rand=rand, rand2=rand2, rand3=rand3, name=first)
+    return render_template("main.html", rand=m, rand2=o, rand3=c, name=first)
