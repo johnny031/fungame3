@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    .container-fluid {
+      padding: 25px;
+    }
+  </style>
   <body>
-    <h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
-    <input type="number" id="number" />
+    <div class="container-fluid">
+      <h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
+      <input type="number" id="number" />
 
-    <button onclick="myFunction()">確認</button>
+      <button onclick="myFunction()">確認</button>
+    </div>
 
     <script>
       var m = {{m | tojson}};
@@ -17,13 +32,16 @@
 
       function myFunction() {
         var h3 = document.createElement("h3");
-        h3.innerHTML = "玩家名稱：<br>";
+        h3.innerHTML = "<br> 玩家名稱：<br>";
         h3.style.fontFamily = "Microsoft JhengHei";
         document.body.appendChild(h3);
+        document.querySelector(".container-fluid").appendChild(h3);
 
         var f = document.createElement("form");
         f.setAttribute("method", "get");
+        f.setAttribute("name", "form_role");
         f.setAttribute("action", "{{ url_for('hello') }}");
+        f.setAttribute("onsubmit", "return validateForm()");
 
         var x = document.getElementById("number").value;
 
@@ -73,6 +91,40 @@
             f.appendChild(input);
         }
 
+        var h3 = document.createElement("h3");
+        h3.innerHTML = "<br> 選擇角色：<br>";
+        h3.style.fontFamily = "Microsoft JhengHei";
+        f.appendChild(h3);
+
+        var roles = ["1", "2", "3", "4", "5", "6", "7"]
+        var rolesChinese = ["鑑證專家", "兇手", "幫兇", "目擊者", "秘密保鑣", "化驗師", "涉案人"]
+
+        var inputcontainer = document.createElement("div");
+        inputcontainer.setAttribute("id", "roleInputContainer")
+
+        for (i=0; i<7; i++) {
+          var detective = document.createElement("input");
+          detective.type = "checkbox";
+          detective.value = roles[i];
+          detective.name = "r";
+          detective.style.display = "inline";
+          var decW = document.createElement("h5");
+          decW.innerHTML = rolesChinese[i];
+          decW.style.fontFamily = "Microsoft JhengHei";
+          decW.style.display = "inline"
+          inputcontainer.appendChild(detective);
+          inputcontainer.appendChild(decW);
+          var space = document.createElement("div");
+          space.innerHTML = "<br>";
+          inputcontainer.appendChild(space);
+          f.appendChild(inputcontainer);
+        }
+
+        var space = document.createElement("div");
+        space.innerHTML = "<br>";
+        f.appendChild(space);
+
+
         var s = document.createElement("input"); //input element, Submit button
 
         s.setAttribute("type", "submit");
@@ -80,6 +132,30 @@
         f.appendChild(s);
 
         document.getElementsByTagName("body")[0].appendChild(f);
+        document.querySelector(".container-fluid").appendChild(f);
+      }
+
+      function validateForm() {
+
+        var x = document.getElementById("number").value
+        if (x < 3 || x > 14) {
+          alert("遊戲人數需介於4至14人之間(含鑑識專家)")
+          return false
+        }
+        var container = document.getElementById('roleInputContainer');
+        var roleInputs = container.getElementsByTagName('input');
+
+        var checked_role_number = 0
+        for (i = 0; i < roleInputs.length; i++) {
+          if (roleInputs[i].checked) {
+            checked_role_number ++
+          }
+        }
+        if (checked_role_number > x) {
+          alert("選擇之角色已超過遊戲人數")
+          console.log(checked_role_number)
+          return false
+        }
       }
     </script>
   </body>

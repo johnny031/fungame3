@@ -28,9 +28,12 @@ def hello():
     first = request.args.getlist("n")
     
     m = request.args.getlist("m")
-
     o = request.args.getlist("o")
+    c = request.args.getlist("c")  
+    r = request.args.getlist("r")
 
-    c = request.args.getlist("c")
-    
-    return render_template("main.html", rand=m, rand2=o, rand3=c, name=first)
+    for i in range (len(first)-len(r)):
+        r.append("0")
+
+    random.shuffle(r)
+    return render_template("main.html", rand=m, rand2=o, rand3=c, r=r, name=first)

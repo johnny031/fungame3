@@ -19,6 +19,79 @@
       top: 500px !important;
     }
 
+    .butn {
+      padding: 5px;
+      margin: 7px;
+      font-family: Microsoft JhengHei;
+      font-weight: bold;
+      color: white;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+    }
+    #cause_of_death {
+      /*button*/
+      background-color: rgb(134, 28, 111);
+    }
+    #cause_of_death:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: rgb(134, 28, 111);
+    }
+
+    #location {
+      /*button*/
+      background-color: rgb(27, 133, 17);
+    }
+    #location:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: rgb(27, 133, 17);
+    }
+
+    #other_clues {
+      /*button*/
+      background-color: rgb(134, 126, 13);
+    }
+    #other_clues:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: rgb(134, 126, 13);
+    }
+
+    #another_clue1 {
+      /*button*/
+      background-color: rgb(180, 101, 10);
+    }
+    #another_clue1:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: rgb(180, 101, 10);
+    }
+    #another_clue2 {
+      /*button*/
+      background-color: rgb(196, 14, 14);
+    }
+    #another_clue2:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: rgb(196, 14, 14);
+    }
+
+    #check_identity {
+      /*button*/
+      background-color: #464646;
+    }
+    #check_identity:hover {
+      /*button*/
+      background-color: #ffffff;
+      color: #464646;
+    }
+
+    #identity {
+      font-family: Microsoft JhengHei;
+      padding: 5px;
+    }
+
     #clues0 {
       /*clues0~3：four random clue cards image*/
       position: absolute;
@@ -69,53 +142,16 @@
     }
 
     #images {
-      position: absolute;
-      left: 30px;
-      top: 80px;
       empty-cells: show;
     }
 
-    #cause_of_death {
-      /*button*/
-      position: absolute;
-      top: 10px;
-      left: 10px;
+    #image_container {
+      padding-left: 35px;
     }
-
-    #location {
-      /*button*/
-      position: absolute;
-      top: 10px;
-      left: 160px;
+    #detective_name {
+      font-family: Microsoft JhengHei;
+      padding: 12px;
     }
-
-    #other_clues {
-      /*button*/
-      position: absolute;
-      top: 10px;
-      left: 265px;
-    }
-
-    #another_clue1 {
-      /*button*/
-      position: absolute;
-      top: 20px;
-      left: 390px;
-      height: 30px;
-      text-align: center;
-      line-height: 10px;
-    }
-
-    #another_clue2 {
-      /*button*/
-      position: absolute;
-      top: 20px;
-      left: 490px;
-      height: 30px;
-      text-align: center;
-      line-height: 10px;
-    }
-
     .cause_of_death {
       /*choose card*/
       height: 300px;
@@ -499,6 +535,7 @@
           var rand = {{rand | tojson}}
           var rand2 = {{rand2 | tojson}}
           var rand3 = {{rand3 | tojson}}
+          var role = {{r | tojson}}
 
           console.log(rand)
           console.log(rand2)
@@ -524,6 +561,38 @@
                       pictures2.push(object);
                   }
 
+                if(role.includes("1") === true) {
+                    var detective = test[Math.floor(Math.random()*test.length)]
+                    var index = test.indexOf(detective)
+                    test.splice(index, 1)
+                    var index1 = role.indexOf("1")
+                    role.splice(index1, 1)
+                    $("#detective_name").html("鑑證專家：" + detective)
+                }
+
+                //把role換成中文
+                role_chinese = ["調查員", "null", "兇手", "幫兇", "目擊者", "秘密保鑣", "化驗師", "涉案人"]
+
+                for (i=0; i<role.length; i++) {
+                    role.splice(i, 1, role_chinese[role[i]])
+                }
+                console.log(role)
+                //把role換成中文
+
+                var n = 0
+
+                $("#check_identity").click(function(){
+                    if (n%2 === 0) {
+                        $("#identity").html(test[n/2])
+                    }
+                    if (n%2 !== 0) {
+                        $("#identity").html(role[Math.floor(n/2)])
+                    }
+                    if (n === test.length*2) {
+                        $("#identity").html("")
+                    }
+                    n++
+                });
 
                       for (j=0; j<test.length; j++){
 
@@ -597,10 +666,36 @@
                           document.body.appendChild(space);
                           document.querySelector("#images").appendChild(space);
 
-
-
-
                       }
+
+
+                    var tr3 = document.createElement("tr");
+                    tr3.className = "row";
+
+                    var qrcodeTitle = document.createElement("h3");
+                    qrcodeTitle.innerHTML = "QRcode：";
+                    qrcodeTitle.style.fontFamily = "Microsoft JhengHei";
+
+                    var tdQRT = document.createElement("td");
+                    tdQRT.className = "column";
+                    tdQRT.appendChild(qrcodeTitle);
+                    tr3.appendChild(tdQRT);
+
+
+                    var td = document.createElement("td");
+                    td.className = "column";
+                    var qrcode = document.createElement("div");
+                    qrcode.setAttribute("id", "qrcode");
+                    td.appendChild(qrcode);
+                    tr3.appendChild(td);
+                    document.body.appendChild(tr3);
+                    document.querySelector("#images").appendChild(tr3);
+
+                    var buttomSpace = document.createElement("div");
+                    buttomSpace.innerHTML = "<br>";
+                    document.body.appendChild(buttomSpace);
+                    document.querySelector("#images").appendChild(buttomSpace);
+
 
                   document.querySelector("#cause_of_death").onclick = function() {
                       document.getElementById("cause_of_death").disabled = true;
@@ -1742,24 +1837,33 @@
 
           })
     </script>
-    <button type="button" class="btn btn-danger" id="cause_of_death">
-      Cause of death
-    </button>
-    <button type="button" class="btn btn-success" id="location">
-      Location
-    </button>
-    <button type="button" class="btn btn-warning" id="other_clues">
-      Other clues
-    </button>
-    <button type="button" class="btn btn-primary" id="another_clue1" disabled>
-      Replace
-    </button>
-    <button type="button" class="btn btn-info" id="another_clue2" disabled>
-      Last chance
-    </button>
-
-    <table id="images"></table>
-
+    <div class="container-fluid">
+      <div class="row">
+        <button type="button" class="butn col-sm-1" id="cause_of_death">
+          死因
+        </button>
+        <button type="button" class="butn col-sm-1" id="location">
+          地點
+        </button>
+        <button type="button" class="butn col-sm-1" id="other_clues">
+          線索
+        </button>
+        <button type="button" class="butn col-sm-1" id="another_clue1" disabled>
+          替換
+        </button>
+        <button type="button" class="butn col-sm-1" id="another_clue2" disabled>
+          最後線索
+        </button>
+        <button type="button" class="butn col-sm-1" id="check_identity">
+          確認身分
+        </button>
+        <h3 id="identity"></h3>
+      </div>
+    </div>
+    <div class="container-fluid" id="image_container">
+      <h4 id="detective_name"></h4>
+      <table id="images"></table>
+    </div>
     <map name="choose_cause_of_death">
       <area shape="rect" coords="53,50,92,75" id="area1_1" />
       <area shape="rect" coords="53,90,92,115" id="area1_2" />
@@ -1820,7 +1924,6 @@
     <a id="a4"></a>
 
     <table id="clues_cards"></table>
-
     <a id="a5"></a>
     <a id="a6"></a>
     <a id="a7"></a>
@@ -1828,7 +1931,6 @@
 
     <div class="row">
       <div class="col-sm-6" style="z-index: -5"></div>
-      <div id="qrcode"></div>
     </div>
   </body>
 </html>
