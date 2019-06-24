@@ -580,17 +580,37 @@
                 //把role換成中文
 
                 var n = 0
+                var identity_show = false
 
                 $("#check_identity").click(function(){
-                    if (n%2 === 0) {
+                    if (n < test.length*2 && n%2 === 0) {
                         $("#identity").html(test[n/2])
                     }
-                    if (n%2 !== 0) {
+                    if (n < test.length*2 && n%2 !== 0) {
                         $("#identity").html(role[Math.floor(n/2)])
                     }
                     if (n === test.length*2) {
                         $("#identity").html("")
                     }
+                    if (n === test.length*2 + 1) {
+                        $("#check_identity").html("查看身分")
+                    }
+                    if (n > test.length*2 + 1) {
+                        if (identity_show === false) {
+                            for (i=0; i<test.length; i++) {
+                                if (i < test.length-1) {
+                                    $("#identity").append(test[i] + "：" + role[i] + "／")
+                                }
+                                if (i === test.length-1) {
+                                    $("#identity").append(test[i] + "：" + role[i])
+                                }
+                            }
+                        }
+                        if (identity_show === true) {
+                            $("#identity").html("")
+                        }
+                    }
+                    identity_show = !identity_show
                     n++
                 });
 

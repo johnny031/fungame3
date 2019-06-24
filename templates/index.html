@@ -10,7 +10,63 @@
   </head>
   <style>
     .container-fluid {
-      padding: 25px;
+      padding: 30px;
+    }
+
+    #roleInputContainer {
+      padding: 16px 16px 0 16px;
+    }
+    .container_label {
+      position: relative;
+      cursor: pointer;
+    }
+    .container_label input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+    }
+
+    .container_label:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+
+    .container_label input:checked ~ .checkmark {
+      background-color: #740000;
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    .container_label input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    .container_label .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 8px;
+      height: 13px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    .container_label h5 {
+      padding-left: 33px;
     }
   </style>
   <body>
@@ -18,7 +74,7 @@
       <h3 style="font-family:Microsoft JhengHei">遊戲人數：</h3>
       <input type="number" id="number" />
 
-      <button onclick="myFunction()">確認</button>
+      <button id="number_button" onclick="myFunction()">確認</button>
     </div>
 
     <script>
@@ -31,6 +87,14 @@
       console.log(c);
 
       function myFunction() {
+        var x = document.getElementById("number").value;
+
+        if (x < 3 || x > 14) {
+          alert("遊戲人數需介於4至14人之間(含鑑識專家)")
+          return false
+        } else {
+          document.getElementById("number_button").disabled = true;
+        }
         var h3 = document.createElement("h3");
         h3.innerHTML = "<br> 玩家名稱：<br>";
         h3.style.fontFamily = "Microsoft JhengHei";
@@ -43,7 +107,8 @@
         f.setAttribute("action", "{{ url_for('hello') }}");
         f.setAttribute("onsubmit", "return validateForm()");
 
-        var x = document.getElementById("number").value;
+        var nameInputContainer = document.createElement("div")
+        nameInputContainer.setAttribute("id", "name_input_container")
 
         for (i = 0; i < x; i++) {
           var input = document.createElement("input");
@@ -53,7 +118,8 @@
           input.style.display = "block";
           input.style.margin = "10px";
           input.style.padding = "5px";
-          f.appendChild(input);
+          nameInputContainer.appendChild(input);
+          f.appendChild(nameInputContainer);
         }
 
         m.slice(0, 4*x)
@@ -102,9 +168,30 @@
         var inputcontainer = document.createElement("div");
         inputcontainer.setAttribute("id", "roleInputContainer")
 
+
+
         for (i=0; i<7; i++) {
+          var containerLabel = document.createElement("label")
+          containerLabel.className = "container_label"
           var detective = document.createElement("input");
           detective.type = "checkbox";
+          var x = document.getElementById("number").value
+          if (x <= 3) {
+            if (i === 1) {
+              detective.checked = "checked";
+            }
+          }
+          if (x < 6 && x > 3) {
+            if (i === 0 || i === 1) {
+              detective.checked = "checked";
+            }
+          }
+          if (x >= 6) {
+            if (i === 0 || i === 1 || i === 2 || i === 3) {
+              detective.checked = "checked";
+            }
+          }
+
           detective.value = roles[i];
           detective.name = "r";
           detective.style.display = "inline";
@@ -112,18 +199,20 @@
           decW.innerHTML = rolesChinese[i];
           decW.style.fontFamily = "Microsoft JhengHei";
           decW.style.display = "inline"
-          inputcontainer.appendChild(detective);
-          inputcontainer.appendChild(decW);
+
+          var checkmark = document.createElement("span");
+          checkmark.className = "checkmark";
+
+          containerLabel.appendChild(detective);
+          containerLabel.appendChild(decW);
+          containerLabel.appendChild(checkmark);
+
+          inputcontainer.appendChild(containerLabel);
           var space = document.createElement("div");
           space.innerHTML = "<br>";
           inputcontainer.appendChild(space);
           f.appendChild(inputcontainer);
         }
-
-        var space = document.createElement("div");
-        space.innerHTML = "<br>";
-        f.appendChild(space);
-
 
         var s = document.createElement("input"); //input element, Submit button
 
@@ -136,12 +225,17 @@
       }
 
       function validateForm() {
+        var nameContainer = document.getElementById('name_input_container');
+        var nameInputs = nameContainer.getElementsByTagName('input');
+        for (i = 0; i < nameInputs.length; i++) {
+          if (nameInputs[i].value === "") {
+            alert("玩家名稱請勿空白")
+            return false
+          }
+        }
+
 
         var x = document.getElementById("number").value
-        if (x < 3 || x > 14) {
-          alert("遊戲人數需介於4至14人之間(含鑑識專家)")
-          return false
-        }
         var container = document.getElementById('roleInputContainer');
         var roleInputs = container.getElementsByTagName('input');
 
