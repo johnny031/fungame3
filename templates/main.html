@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Website!</title>
+    <title>fungame3</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -16,6 +16,7 @@
     }
 
     #qrcode {
+      display: none;
       top: 500px !important;
     }
 
@@ -512,6 +513,14 @@
       height: 35px;
       z-index: 2;
     }
+    .show_qrcode {
+      margin-top: 0 !important;
+      background-color: rgb(74, 74, 206);
+    }
+    .show_qrcode:hover {
+      background-color: #ffffff;
+      color: rgb(74, 74, 206);
+    }
   </style>
 
   <body>
@@ -540,10 +549,11 @@
                 $('#qrcode').qrcode({
                     text: window.location.href,
                     render: 'canvas',
-                    width: 150,
-                    height: 150
+                    width: 300,
+                    height: 300
                 });
             })
+
               var pictures = [];
 
 
@@ -695,8 +705,9 @@
                 var tr3 = document.createElement("tr");
                 tr3.className = "row";
 
-                var qrcodeTitle = document.createElement("h3");
-                qrcodeTitle.innerHTML = "QRcode：";
+                var qrcodeTitle = document.createElement("button");
+                qrcodeTitle.innerHTML = "顯示QRcode";
+                qrcodeTitle.className = "show_qrcode butn";
                 qrcodeTitle.style.fontFamily = "Microsoft JhengHei";
 
                 var tdQRT = document.createElement("td");
@@ -1856,8 +1867,9 @@
                       }
                   }
               }
-
-
+              document.querySelector(".show_qrcode").onclick = function() {
+                $('#qrcode').toggle("slow");
+            }
       })
     </script>
     <div class="container-fluid">
