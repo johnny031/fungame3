@@ -514,7 +514,7 @@
       z-index: 2;
     }
     .show_qrcode {
-      margin-top: 0 !important;
+      margin: 12px 0 !important;
       background-color: rgb(74, 74, 206);
     }
     .show_qrcode:hover {
@@ -549,8 +549,8 @@
                 $('#qrcode').qrcode({
                     text: window.location.href,
                     render: 'canvas',
-                    width: 300,
-                    height: 300
+                    width: 500,
+                    height: 500
                 });
             })
 
@@ -702,28 +702,24 @@
                   }
 
 
-                var tr3 = document.createElement("tr");
-                tr3.className = "row";
 
                 var qrcodeTitle = document.createElement("button");
                 qrcodeTitle.innerHTML = "顯示QRcode";
                 qrcodeTitle.className = "show_qrcode butn";
                 qrcodeTitle.style.fontFamily = "Microsoft JhengHei";
 
-                var tdQRT = document.createElement("td");
-                tdQRT.className = "column";
-                tdQRT.appendChild(qrcodeTitle);
-                tr3.appendChild(tdQRT);
+                var trQRT = document.createElement("tr");
+                trQRT.appendChild(qrcodeTitle);
 
 
-                var td = document.createElement("td");
-                td.className = "column";
+                var trQRC = document.createElement("tr");
                 var qrcode = document.createElement("div");
                 qrcode.setAttribute("id", "qrcode");
-                td.appendChild(qrcode);
-                tr3.appendChild(td);
-                document.body.appendChild(tr3);
-                document.querySelector("#images").appendChild(tr3);
+                trQRC.appendChild(qrcode);
+                document.body.appendChild(trQRT);
+                document.body.appendChild(trQRC);
+                document.querySelector("#images").appendChild(trQRT);
+                document.querySelector("#images").appendChild(trQRC);
 
                 var buttomSpace = document.createElement("div");
                 buttomSpace.innerHTML = "<br>";
