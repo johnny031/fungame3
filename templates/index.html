@@ -126,6 +126,15 @@
         o.slice(0, 4*x)
         c.slice(0, 6)
 
+        var input = document.createElement("input");
+        input.type = "text";
+        input.value = Math.floor(Math.random()*x);
+        input.name = "d";
+        input.style.display = "none";
+        input.style.margin = "10px";
+        input.style.padding = "5px";
+        f.appendChild(input);
+
         for (i=0; i<4*x; i++) {
             var input = document.createElement("input");
             input.type = "text";

@@ -26,7 +26,8 @@ def index():
 @app.route("/main")
 def hello():
     first = request.args.getlist("n")
-    
+    d = request.args.get("d")
+
     m = request.args.getlist("m")
     o = request.args.getlist("o")
     c = request.args.getlist("c")  
@@ -36,4 +37,4 @@ def hello():
         r.append("0")
 
     random.shuffle(r)
-    return render_template("main.html", rand=m, rand2=o, rand3=c, r=r, name=first)
+    return render_template("main.html", rand=m, rand2=o, rand3=c, r=r, name=first, d=d)

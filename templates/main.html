@@ -529,18 +529,14 @@
     <script type="text/javascript" src="/static/jquery.qrcode.js"></script>
     <script type="text/javascript" src="/static/qrcode.js"></script>
     <script>
-
-
-
-
-
       var test = {{name | tojson}}
       var rand = {{rand | tojson}}
       var rand2 = {{rand2 | tojson}}
       var rand3 = {{rand3 | tojson}}
       var role = {{r | tojson}}
+      var detective = {{d | tojson}}
 
-
+      console.log(detective)
 
           document.addEventListener('DOMContentLoaded', function() {
 
@@ -572,12 +568,11 @@
               }
 
             if(role.includes("1") === true) {
-                var detective = test[Math.floor(Math.random()*test.length)]
-                var index = test.indexOf(detective)
-                test.splice(index, 1)
+                var detectiveName = test[detective]
+                $("#detective_name").html("鑑證專家：" + detectiveName)
+                test.splice(detective, 1)
                 var index1 = role.indexOf("1")
                 role.splice(index1, 1)
-                $("#detective_name").html("鑑證專家：" + detective)
             }
 
             //把role換成中文
